@@ -1,22 +1,34 @@
+
 import React, {useState} from "react";
 import Nav from './Nav';
-import Axios from 'axios'
+import Axios from 'axios';
+import {  useNavigate } from 'react-router-dom';
+
+const baseURL = "http://localhost:3001/api/register";
 
 function Register() {
-
+  const [post, setPost] = React.useState(null);
   const [Firstname, setFirstname] = useState('')
   const [Lastname, setLastname] = useState('')
   const [Username, setUsername] = useState('')
   const [Email, setEmail] = useState('')
   const [Password, setPassword] = useState('')
 
-  const registerAccount = () => {
-    Axios.post('http://localhost:3001/api/register', {FirstName: Firstname, LastName: Lastname, UserName:Username, Email:Email, Password:Password}).then(()=> {
-      alert('Your account was successdully created')
-    });
-    
-  };
-
+  let navigate = useNavigate();
+  function createPost() {
+    Axios
+      .post(baseURL, {
+        FirstName: Firstname, 
+        LastName: Lastname, 
+        UserName:Username, 
+        Email:Email, 
+        Password:Password
+      })
+      .then((response) => {
+        setPost(response.data);
+        navigate("/login");
+      });
+  }
   return (
       <section className= "Main">
       <Nav />
@@ -30,13 +42,13 @@ function Register() {
           <label for="Firstname" class="leading-7 text-sm text-gray-600">First Name</label>
           <input type="text" id="Firstname" name="Firstname" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" onChange = {(e) =>{
             setFirstname(e.target.value)
-          }}></input>
+          }} ></input>
         </div>
         <div class="relative mb-4">
           <label for="Lastname" class="leading-7 text-sm text-gray-600">Last Name</label>
-          <input type="text" id="Lastname" name="Lastname" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" onChange = {(e) =>{
+          <input type="text" id="Lastname" name="Lastname" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"onChange = {(e) =>{
             setLastname(e.target.value)
-          }}></input>
+          }} ></input>
         </div>
         <div class="relative mb-4">
           <label for="Username" class="leading-7 text-sm text-gray-600">Username</label>
@@ -56,7 +68,7 @@ function Register() {
           setPassword(e.target.value)
         }}></input>
         </div>
-        <button className="button"  onClick={registerAccount} class="text-white bg-red-800 border-0 py-2 px-8 focus:outline-none hover:bg-bg-blue-900 rounded text-lg">Register</button>
+        <button  className="button" onClick={createPost} class="text-white bg-red-800 border-0 py-2 px-8 focus:outline-none hover:bg-bg-blue-900 rounded text-lg">Register</button>
         &nbsp;
       </div>
       </div>

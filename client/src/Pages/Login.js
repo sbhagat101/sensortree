@@ -4,28 +4,29 @@ import '../logo.svg';
 import Nav from './Nav';
 import Axios from 'axios'
 
-function Register() {
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
-    const [loginStatus, setloginStatus] =  useState("")
+const baseURL = "http://localhost:3001/login";
 
-    let navigate = useNavigate();
+function Login() {
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [loginStatus, setloginStatus] =  useState("")
 
-    const login = () => {
-        Axios.post('http://localhost:3001/login', {
-            username: username,
-            password: password,
-        }).then((response) => {
-            if(response.data.message){
-                setloginStatus(response.data.message)
-            } else {
-                navigate.push("/Explore");
-            }
-            
-        })
-    };
+  let navigate = useNavigate();
 
-
+  function getPost() {
+    Axios
+      .post(baseURL, {
+        username: username,
+        password: password,
+      })
+      .then((response) => {
+        if(response.data.message){
+          setloginStatus(response.data.message)
+      } else {
+          navigate("/Home");
+      }
+      });
+  }
   return (
     <section className= "Main">
     <Nav />
@@ -47,7 +48,7 @@ function Register() {
           setPassword(e.target.value)
         }}></input>
         </div>
-        <button  onClick={login} className="button">Login</button>
+        <button onClick={getPost} className="button">Login</button>
         &nbsp;
         <button className="button"   type="button">
         <Link to= "/register" > 
@@ -73,4 +74,4 @@ function Register() {
 )
 }
 
-export default Register;
+export default Login;
