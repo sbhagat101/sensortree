@@ -23,7 +23,7 @@ function Login() {
         if(response.data.message){
           setloginStatus(response.data.message)
       } else {
-          navigate("/Home");
+          navigate("/Dashboard");
       }
       });
   }
